@@ -17,15 +17,15 @@ describe("Get balance", () => {
     getBalanceUseCase = new GetBalanceUseCase(statmentRepositoryInMemory, usersRepositoryInMemory);
   });
 
-  it("should be able get balance of a user", async () => {
+  it("should be able to get balance of a user", async () => {
     const user = await usersRepositoryInMemory.create({
       name: "User Statment",
       email: "userStatment@mail.com",
       password: "123456",
     });
     const balance = await getBalanceUseCase.execute({ user_id: user.id! });
-
-    expect(balance).toBeTruthy();
+ 
+    expect(balance).toHaveProperty("balance");
   });
 
   it("should not be able to get balance of a non existing user ", async () => {

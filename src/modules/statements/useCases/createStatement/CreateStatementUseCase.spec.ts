@@ -22,21 +22,45 @@ describe("Create statement", () => {
     createStatmentUseCase = new CreateStatementUseCase(usersRepositoryInMemory, statmentRepositoryInMemory);
   });
 
-  it("should be able to crate a new statement", async () => {
+  it("should be able to crate a deposit statement", async () => {
     const user = await usersRepositoryInMemory.create({
       name: "User Statment",
       email: "userStatment@mail.com",
       password: "123456",
     });
     
-    const statment = await createStatmentUseCase.execute({ 
+    const statement = await createStatmentUseCase.execute({ 
       user_id: user.id!, 
       type: OperationType.DEPOSIT, 
       amount: 10, 
       description: "description" 
     });
 
-    expect(statment).toBeTruthy();
+    expect(statement).toHaveProperty("id");
+  });
+
+  it("should be able to crate a withdraw statement", async () => {
+    const user = await usersRepositoryInMemory.create({
+      name: "User Statment",
+      email: "userStatment@mail.com",
+      password: "123456",
+    });
+    
+    await createStatmentUseCase.execute({ 
+      user_id: user.id!, 
+      type: OperationType.DEPOSIT, 
+      amount: 10, 
+      description: "description" 
+    });
+
+    const statement = await createStatmentUseCase.execute({ 
+      user_id: user.id!, 
+      type: OperationType.WITHDRAW, 
+      amount: 5, 
+      description: "description" 
+    });
+
+    expect(statement).toHaveProperty("id");
   });
 
   it("should not be able to crate a new statement for a non existing user ", async () => {
@@ -57,7 +81,7 @@ describe("Create statement", () => {
       password: "123456",
     });
 
-    const statement = await statmentRepositoryInMemory.create({ 
+    await statmentRepositoryInMemory.create({ 
       user_id: user.id!, 
       type: OperationType.DEPOSIT, 
       amount: 100, 

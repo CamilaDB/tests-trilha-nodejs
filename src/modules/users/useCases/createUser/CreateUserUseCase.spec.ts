@@ -13,13 +13,13 @@ describe("Create User", () => {
   });
   
   it("should be able to create new user", async () => {
-    const user = await createUserUseCase.execute({
+    const result = await createUserUseCase.execute({
       name: "User Test",
       email: "userTest@mail.com",
       password: "123456",
     });
 
-    expect(usersRepositoryInMemory.findByEmail(user.email)).toBeTruthy();
+    expect(result).toHaveProperty("id");
   });
 
   it("should not be able to create new user when email is already taken", async () => {

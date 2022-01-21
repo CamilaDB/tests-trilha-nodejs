@@ -15,7 +15,7 @@ describe("Authenticate User", () => {
     createUserUseCase = new CreateUserUseCase(usersRepositoryInMemory);
   })
   
-  it("should be able to authenticate an user", async () => {
+  it("should be able to authenticate", async () => {
     const user: ICreateUserDTO = {
       name: "User Test",
       email: "userTest@mail.com",
@@ -25,11 +25,12 @@ describe("Authenticate User", () => {
     await createUserUseCase.execute(user);
 
     const result = await authenticateUserUseCase.execute({ 
-      email: user.email, 
-      password: user.password 
+      email: "userTest@mail.com", 
+      password: "123456" 
     });
 
     expect(result).toHaveProperty("token");
+    expect(result).toHaveProperty("user");
   });
   
   it("should not be able to authenticate an nonexistent user", async () => {
@@ -44,7 +45,7 @@ describe("Authenticate User", () => {
       const user: ICreateUserDTO = {
         name: "User Test Error",
         email: "userTestError@mail.com",
-        password: "123456",
+        password:"123456",
       };
 
       await createUserUseCase.execute(user);

@@ -37,12 +37,12 @@ describe("Get balance", () => {
       description: "description" 
     });
 
-    const statmentOperation = await getStatmentOperationUseCase.execute({
+    const statementOperation = await getStatmentOperationUseCase.execute({
       user_id: user.id!, 
       statement_id: statement.id!
     });
 
-    expect(statmentOperation).toBeTruthy();
+    expect(statementOperation).toStrictEqual(statement);
   });
 
   it("should not be able to get operation stattement of a non existing user", async () => {
